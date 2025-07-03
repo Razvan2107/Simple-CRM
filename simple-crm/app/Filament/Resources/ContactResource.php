@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -58,9 +60,9 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('email')->searchable(),
-                TextColumn::make('company'),
+                TextColumn::make('name')->limit(30)->searchable(),
+                TextColumn::make('email')->limit(40)->searchable(),
+                TextColumn::make('company')->limit(40),
                 TextColumn::make('deal_status')->label('Status')->badge(),
                 TextColumn::make('tag')->label('Tag')->badge(),
             ])
@@ -81,6 +83,9 @@ class ContactResource extends Resource
                         'event_attendee' => 'Event Attendee',
                         'referral_source' => 'Referral Source',
                     ]),
+            ])
+            ->actions([
+                DeleteAction::make(),
             ]);
     }
 

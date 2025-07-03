@@ -10,6 +10,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 
@@ -56,11 +58,27 @@ class InteractionResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('contact.name')->label('Contact'),
-                TextColumn::make('interaction_type')->label('Type')->badge(),
-                TextColumn::make('date')->sortable(),
+                IconColumn::make('interaction_type')
+                    ->label('Type')
+                    ->icon(fn (string $state): string => match ($state) {
+                        'meeting' => 'heroicon-o-calendar',
+                        'call' => 'heroicon-o-phone',
+                        'email' => 'heroicon-o-envelope',
+                        'note' => 'heroicon-o-pencil',
+                        'other' => 'heroicon-o-question-mark-circle',
+                        default => 'heroicon-o-chat-bubble-left',
+                    })
+                    ->color(fn (string $state): string => match ($state) { default => 'primary',})
+                    ->alignCenter(),
+                TextColumn::make('date')
+                    ->dateTime('d.m.Y H:i')
+                    ->sortable(),
                 TextColumn::make('content')->limit(50)->wrap(),
             ])
-            ->defaultSort('date', 'desc');
+            ->defaultSort('date', 'desc')
+            ->actions([
+                DeleteAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
