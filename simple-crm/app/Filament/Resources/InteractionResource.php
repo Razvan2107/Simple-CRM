@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\InteractionResource\Pages;
-use App\Filament\Resources\InteractionResource\RelationManagers;
 use App\Models\Interaction;
 use Filament\Forms\Form;
 use Filament\Forms\Components\Select;
